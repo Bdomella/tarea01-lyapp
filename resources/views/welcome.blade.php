@@ -75,11 +75,17 @@
                         for (let item2 of datos.serie) {
                             pi = item2.valor;
 
-                            data += pi + ", ";
+                            data += pi + ",";
+
+                            const data2 = data.substr(0, data.length - 1);
+                            console.log(data2);
+
+                            let arr = data2.split(',').map(Number);
+                            console.log(arr);
 
                             let resultado = document.querySelector('#resultado');
-                            resultado.innerHTML += '<li>NOMBRE: ' + moneda + ' VALOR:' + pi + ' - ' + 'FECHA: ' + item +
-                                '</li>';
+                            // resultado.innerHTML += '<li>NOMBRE: ' + moneda + ' VALOR:' + pi + ' - ' + 'FECHA: ' + item +
+                            //     '</li>';
 
                             Highcharts.chart('container', {
 
@@ -98,9 +104,7 @@
                                 },
 
                                 xAxis: {
-                                    accessibility: {
-                                        rangeDescription: 'Range: 2010 to 2017'
-                                    }
+                                    categories: @json($array)
                                 },
 
                                 legend: {
@@ -114,13 +118,12 @@
                                         label: {
                                             connectorAllowed: false
                                         },
-                                        pointStart: 2010
                                     }
                                 },
 
                                 series: [{
                                     name: moneda,
-                                    data: [213]
+                                    data: arr
                                 }],
 
                                 responsive: {
@@ -141,7 +144,7 @@
                             });
 
                         }
-                        console.log(data);
+
                         // console.log("Fecha: " + item + " valor: " + pi);
 
                     }
