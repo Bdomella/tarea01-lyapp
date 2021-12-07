@@ -13,6 +13,7 @@ class Graficos extends Controller
         $valorInicial = $request->desde;
         $valorFinal = $request->hasta;
         $moneda = $request->moneda;
+        $color = $request->color;
 
         $cadena = "";
 
@@ -26,7 +27,7 @@ class Graficos extends Controller
         $cadena = substr($cadena, 0, -1);
         $array = explode(",", $cadena);
     
-        return view('welcome', compact('array', 'moneda'));
+        return view('welcome', compact('array', 'moneda', 'valorInicial', 'valorFinal', 'color'));
     }
 
 

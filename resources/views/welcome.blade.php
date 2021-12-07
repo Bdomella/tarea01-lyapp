@@ -4,16 +4,31 @@
     <div class="container">
         <form method="GET" action="{{ route('ver') }}">
             @csrf
-            TIPO MONEDA:
-            <select name="moneda">
-                <option value="uf">UF</option>
-                <option value="dolar">DOLAR</option>
-                <option value="euro">EURO</option>
-                <option value="utm">UTM</option>
-            </select>
-            FECHA DESDE: <input type="date" name="desde">
-            FECHA HASTA: <input type="date" name="hasta">
-            <button class="btn btn-primary btn-block" type="submit">Ver valores</button>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">TIPO MONEDA</label>
+                <div class="mb-3">
+                    <select class="form-select" name="moneda">
+                        <option value="">UNIDAD A GRAFICAR</option>
+                        <option value="uf">UF</option>
+                        <option value="dolar">DOLAR</option>
+                        <option value="euro">EURO</option>
+                        <option value="utm">UTM</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 form-check-inline">
+                <label class="form-label">FECHA DESDE:</label>
+                <input type="date" class="form-control" name="desde" value="{{ $valorInicial }}">
+
+                <label class="form-label">FECHA HASTA:</label>
+                <input type="date" class="form-control" name="hasta" value="{{ $valorFinal }}">
+            </div>
+            <div>
+                <label class="form-label">Color grafico</label>
+                <input type="color" class="form-control form-control-color" name="color" value="{{ $color }}"
+                    title="Choose your color">
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">VER GRAFICO</button>
         </form>
         <ul id="resultado" class="list-group">
             {{-- @foreach ($array as $item)
@@ -56,6 +71,12 @@
             var moneda = @json($moneda);
             var data = "";
 
+            var valorInicial = @json($valorInicial);
+            var valorFinal = @json($valorFinal);
+
+            var colorGrafico = @json($color);
+            console.log(colorGrafico);
+
             fechas.forEach(myFunction);
 
             function myFunction(item, index) {
@@ -87,19 +108,25 @@
                             // resultado.innerHTML += '<li>NOMBRE: ' + moneda + ' VALOR:' + pi + ' - ' + 'FECHA: ' + item +
                             //     '</li>';
 
+                            var text = "Valores del " + moneda + " rango de fechas:"
+                            var text = text.toUpperCase()
+
+                            var text2 = "rango de fechas desde: " + valorInicial + " - hasta: " + valorFinal
+                            var text2 = text2.toUpperCase()
+
                             Highcharts.chart('container', {
 
                                 title: {
-                                    text: 'Solar Employment Growth by Sector, 2010-2016'
+                                    text: text
                                 },
 
                                 subtitle: {
-                                    text: 'Source: thesolarfoundation.com'
+                                    text: text2
                                 },
 
                                 yAxis: {
                                     title: {
-                                        text: 'Number of Employees'
+                                        text: 'Valor de la unidad'
                                     }
                                 },
 
@@ -123,7 +150,8 @@
 
                                 series: [{
                                     name: moneda,
-                                    data: arr
+                                    data: arr,
+                                    color: colorGrafico
                                 }],
 
                                 responsive: {
