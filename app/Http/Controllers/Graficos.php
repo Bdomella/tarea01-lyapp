@@ -42,21 +42,21 @@ class Graficos extends Controller
 
         $valorInicial2 = $request->desde2;
         $valorFinal2 = $request->hasta2;
+
+        $rango = $valorInicial2 . "-" . $valorFinal2;
         $moneda2 = $request->moneda2;
         $cadena2 = $request->cadena2;
         $valor2 = $request->valor2;
+        echo $valor2;
         $i = -1;
 
-        if(!$valorInicial2){
+        if (!$valorInicial2) {
             return back()->with('mensaje', 'Aun no se genera el grafico!');
         }
-        if(!$valorFinal2){
+        if (!$valorFinal2) {
             return back()->with('mensaje', 'Aun no se genera el grafico!');
         }
-        if(!$moneda2){
-            return back()->with('mensaje', 'Aun no se genera el grafico!');
-        }
-        if(!$valor2){
+        if (!$moneda2) {
             return back()->with('mensaje', 'Aun no se genera el grafico!');
         }
 
@@ -68,8 +68,7 @@ class Graficos extends Controller
         foreach ($cadena2 as $cad) {
             $nuevoGrafico = new RangoFecha();
             $nuevoGrafico->unidad = $moneda2;
-            $nuevoGrafico->desde = $valorInicial2;
-            $nuevoGrafico->hasta = $valorFinal2;
+            $nuevoGrafico->rangoFecha = $rango;
             $nuevoGrafico->fecha = $cad;
             $i++;
 
@@ -85,5 +84,38 @@ class Graficos extends Controller
         }
 
         return back()->with('mensaje', 'Rango Agregado!');
+    }
+
+    public function listaIndicador()
+    {
+        $rango = RangoFecha::distinct()->get('rangoFecha');
+
+        return view('grafico', compact('rango'));
+    }
+
+    public function detallesIndicador($rang)
+    {
+        $fechaRango = RangoFecha::where('rangoFecha', $rang)->get();
+        return view('grafico.detalle', compact('fechaRango'));
+    }
+
+    public function updateIndicador(Request $request, $id)
+    {
+        $rangoUpdate = RangoFecha::findOrFail($id);
+
+        $rangoUpdate->valor = $request->valorNuevo;
+
+        $rangoUpdate->save();
+
+        return back()->with('mensaje', 'Nota Actualizada!');
+    }
+
+    public function eliminarIndicador($id)
+    {
+
+        $rangoEliminar = RangoFecha::findOrFail($id);
+        $rangoEliminar->delete();
+
+        return back()->with('mensaje', 'Nota Eliminada');
     }
 }

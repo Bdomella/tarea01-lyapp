@@ -16,8 +16,7 @@ class CreateRangoFechasTable extends Migration
         Schema::create('rango_fechas', function (Blueprint $table) {
             $table->id();
             $table->string('unidad');
-            $table->string('desde');
-            $table->string('hasta');
+            $table->string('rangoFecha');
             $table->string('fecha');
             $table->string('valor');
             $table->timestamps();

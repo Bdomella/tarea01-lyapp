@@ -23,10 +23,10 @@
             </div>
             <div class="mb-3 form-check-inline">
                 <label class="form-label">FECHA DESDE:</label>
-                <input required type="date" class="form-control" name="desde" value="{{ $valorInicial }}">
+                <input required type="date" class="form-control" name="desde">
 
                 <label class="form-label">FECHA HASTA:</label>
-                <input required type="date" class="form-control" name="hasta" value="{{ $valorFinal }}">
+                <input required type="date" class="form-control" name="hasta">
             </div>
             <div>
                 <label class="form-label">Color grafico</label>
@@ -106,6 +106,9 @@
 
                         for (let item2 of datos.serie) {
                             pi = item2.valor;
+                            if (pi === null) {
+                                pi = 0;
+                            }
 
                             data += pi + ",";
 
