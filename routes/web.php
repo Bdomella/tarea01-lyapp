@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\Graficos::class, 'apiIndicador'])->name('ver');
 
+Route::get('/grafico', [App\Http\Controllers\Graficos::class, 'guardarIndicador'])->name('grafico.guardar');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

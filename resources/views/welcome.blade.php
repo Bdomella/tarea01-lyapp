@@ -2,13 +2,18 @@
 
 @section('content')
     <div class="container">
+        @if (session('mensaje'))
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                {{ session('mensaje') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <form method="GET" action="{{ route('ver') }}">
             @csrf
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">TIPO MONEDA</label>
                 <div class="mb-3">
                     <select class="form-select" name="moneda">
-                        <option value="">UNIDAD A GRAFICAR</option>
                         <option value="uf">UF</option>
                         <option value="dolar">DOLAR</option>
                         <option value="euro">EURO</option>
@@ -18,10 +23,10 @@
             </div>
             <div class="mb-3 form-check-inline">
                 <label class="form-label">FECHA DESDE:</label>
-                <input type="date" class="form-control" name="desde" value="{{ $valorInicial }}">
+                <input required type="date" class="form-control" name="desde" value="{{ $valorInicial }}">
 
                 <label class="form-label">FECHA HASTA:</label>
-                <input type="date" class="form-control" name="hasta" value="{{ $valorFinal }}">
+                <input required type="date" class="form-control" name="hasta" value="{{ $valorFinal }}">
             </div>
             <div>
                 <label class="form-label">Color grafico</label>
@@ -30,16 +35,24 @@
             </div>
             <button type="submit" class="btn btn-primary mt-3">VER GRAFICO</button>
         </form>
-        <ul id="resultado" class="list-group">
-            {{-- @foreach ($array as $item)
-                <li>{{$item}}</li>
-            @endforeach --}}
-        </ul>
     </div>
 
-    <figure class="highcharts-figure">
-        <div id="container"></div>
-    </figure>
+    <div class="container">
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+        </figure>
+
+        <form method="GET" action="{{ route('grafico.guardar') }}">
+            @csrf
+            <input type="hidden" value="{{ $valorInicial }}" name="desde2">
+            <input type="hidden" value="{{ $valorFinal }}" name="hasta2">
+            <input type="hidden" value="{{ $moneda }}" name="moneda2">
+            <input type="hidden" value="{{ $cadena }}" name="cadena2">
+            <input id="resultado" type="hidden" name="valor2">
+            <button type="submit" class="btn btn-success mt-3">GUARDAR RANGO DE FECHAS</button>
+        </form>
+        <a href="{{ route('lista.rangos') }}" class="btn btn-warning mt-1">VER RANGOS GUARDADOS</a>
+    </div>
 
     <script>
 
@@ -75,8 +88,6 @@
             var valorFinal = @json($valorFinal);
 
             var colorGrafico = @json($color);
-            console.log(colorGrafico);
-
             fechas.forEach(myFunction);
 
             function myFunction(item, index) {
@@ -102,11 +113,10 @@
                             console.log(data2);
 
                             let arr = data2.split(',').map(Number);
-                            console.log(arr);
+                            let arr2 = data2.split(',');
+                            console.log(arr2);
 
                             let resultado = document.querySelector('#resultado');
-                            // resultado.innerHTML += '<li>NOMBRE: ' + moneda + ' VALOR:' + pi + ' - ' + 'FECHA: ' + item +
-                            //     '</li>';
 
                             var text = "Valores del " + moneda + " rango de fechas:"
                             var text = text.toUpperCase()
@@ -170,7 +180,7 @@
                                 }
 
                             });
-
+                            resultado.value = arr2;
                         }
 
                         // console.log("Fecha: " + item + " valor: " + pi);
