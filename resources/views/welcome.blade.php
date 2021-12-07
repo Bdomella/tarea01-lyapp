@@ -33,7 +33,8 @@
                 <input type="color" class="form-control form-control-color" name="color" value="{{ $color }}"
                     title="Choose your color">
             </div>
-            <button type="submit" class="btn btn-primary mt-3">VER GRAFICO</button>
+            <button type="submit" class="btn btn-primary my-3">VER GRAFICO</button>
+            <a href="{{ route('lista.rangos') }}" class="btn btn-warning my-3">VER RANGOS GUARDADOS</a>
         </form>
     </div>
 
@@ -51,7 +52,7 @@
             <input id="resultado" type="hidden" name="valor2">
             <button type="submit" class="btn btn-success mt-3">GUARDAR RANGO DE FECHAS</button>
         </form>
-        <a href="{{ route('lista.rangos') }}" class="btn btn-warning mt-1">VER RANGOS GUARDADOS</a>
+
     </div>
 
     <script>
@@ -91,7 +92,6 @@
             fechas.forEach(myFunction);
 
             function myFunction(item, index) {
-
                 let url = 'https://mindicador.cl/api/' + moneda + '/' + item;
 
                 const api = new XMLHttpRequest();
@@ -105,11 +105,8 @@
                         let xd = datos.serie
 
                         for (let item2 of datos.serie) {
-                            pi = item2.valor;
-                            if (pi === null) {
-                                pi = 0;
-                            }
 
+                            pi = item2.valor;
                             data += pi + ",";
 
                             const data2 = data.substr(0, data.length - 1);

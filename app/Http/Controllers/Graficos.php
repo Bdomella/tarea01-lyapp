@@ -45,9 +45,13 @@ class Graficos extends Controller
 
         $rango = $valorInicial2 . "-" . $valorFinal2;
         $moneda2 = $request->moneda2;
+
         $cadena2 = $request->cadena2;
+        $cadena2 = explode(",", $cadena2);
+
+        $countCandena = count($cadena2);
+
         $valor2 = $request->valor2;
-        echo $valor2;
         $i = -1;
 
         if (!$valorInicial2) {
@@ -60,7 +64,7 @@ class Graficos extends Controller
             return back()->with('mensaje', 'Aun no se genera el grafico!');
         }
 
-        $cadena2 = explode(",", $cadena2);
+        
         $valor2 = explode(",", $valor2);
 
 
