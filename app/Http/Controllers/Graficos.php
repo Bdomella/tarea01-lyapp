@@ -49,9 +49,12 @@ class Graficos extends Controller
         $cadena2 = $request->cadena2;
         $cadena2 = explode(",", $cadena2);
 
-        $countCandena = count($cadena2);
-
         $valor2 = $request->valor2;
+
+        if($moneda2 === "dolar" || $moneda2 === "euro"){
+            return back()->with('mensaje2', 'Estas moneda por el momento no se pueden guardar!');
+        }
+
         $i = -1;
 
         if (!$valorInicial2) {
